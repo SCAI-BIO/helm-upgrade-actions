@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-deployment
+spec:
+  selector:
+    matchLabels:
+      component: example-service
+      version: {{ .Chart.AppVersion }}
+      deployment-id:  {{ .Release.Name }}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: example-service
+        version: {{ .Chart.AppVersion }}
+        deployment-id:  {{ .Release.Name }}
+    spec:
+      containers:
+      - name: frontend
+        image: ghcr.io/scai-bio/helm-upgrade-actions/hello-world:{{ .Values.ui.version }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
