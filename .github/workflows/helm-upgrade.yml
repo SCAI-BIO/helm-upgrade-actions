@@ -38,8 +38,12 @@ jobs:
     needs: build
 
     steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+    
     - name: helm-deploy
       uses: WyriHaximus/github-action-helm3@v2.0
       with:
-        exec: helm upgrade hello-world --namespace=bio --set=ui.version=${{ github.event.release.tag_name }}
+        exec: helm upgrade hello-world helm --namespace=bio --set=ui.version=${{ github.event.release.tag_name }}
         kubeconfig: '${{ secrets.KUBECONFIG }}'
